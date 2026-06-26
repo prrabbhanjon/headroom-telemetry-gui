@@ -1,181 +1,314 @@
-<!-- ===== VISITOR COUNTER ===== -->
-<p align="center">
-  <img src="https://komarev.com/ghpvc/?username=prrabbhanjon&label=Profile%20Views&color=0e75b6&style=for-the-badge" alt="Profile Views" />
-</p>
+# Headroom Telemetry GUI
 
-<!-- ===== ANIMATED HEADER ===== -->
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0db7ed,100:23a6d5&height=200&section=header&text=Prabhanjan%20Sakinala&fontSize=42&fontColor=ffffff&animation=fadeIn&fontAlignY=38" alt="header" />
-</p>
+> Live token savings dashboard for [Headroom AI](https://github.com/chopratejas/headroom) — deployed on Kubernetes via Podman Desktop.
 
-<h1 align="center">
-  Hi there <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="35px" alt="waving hand" /> I'm Prabhanjan
-</h1>
-
-<p align="center">
-  <a href="https://github.com/prrabbhanjon">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=0DB7ED&center=true&vCenter=true&width=720&lines=Cloud+SME+%7C+13%2B+Years+of+Experience;OpenStack+%26+Telco+Cloud+Specialist;Kubernetes+%7C+OpenShift+%7C+NFVI+Architect;Automating+Infra+with+Ansible+%26+Python;Building+Reliable+Production+Cloud+Platforms" alt="Typing SVG" />
-  </a>
-</p>
+[![Build and publish images](https://github.com/prrabbhanjon/headroom-telemetry-gui/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/prrabbhanjon/headroom-telemetry-gui/actions/workflows/docker-publish.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![ghcr.io proxy](https://img.shields.io/badge/ghcr.io-headroom--proxy-teal)](https://ghcr.io/prrabbhanjon/headroom-proxy)
+[![ghcr.io gui](https://img.shields.io/badge/ghcr.io-headroom--gui-orange)](https://ghcr.io/prrabbhanjon/headroom-gui)
 
 ---
 
-<!-- ===== ABOUT ME ===== -->
-## 👨‍💻 About Me
+## What is this?
 
-I'm a **Cloud Subject Matter Expert** with **13+ years** of hands-on experience designing, deploying, and operating large-scale **Telco Cloud & NFVI platforms**. I live in the trenches of **OpenStack, Kubernetes, OpenShift, and Nokia CBIS/NCS** — turning complex infrastructure into stable, secure, and automated production systems. If it runs at carrier scale, I've probably deployed, upgraded, migrated, or rescued it. 🚀
+Every time you run an AI agent, it pulls in log files, searches code, grabs context — and all of it goes into the LLM as a giant wall of text. You pay per token. Most of that text is boilerplate noise.
 
-I also love sharing what I learn through content on **YouTube 🎥**, **Medium ✍️**, and **Instagram 📸**.
+**Headroom** compresses everything before the model sees it. This project wraps Headroom in a full Kubernetes deployment with a live telemetry dashboard so you can see exactly how many tokens are being saved in real time.
 
-- 🔭 Currently deepening my work in **Telco Cloud, NFVI, and Cloud-Native Networking (CNF/VNF)**
-- 🌱 Always exploring **automation, observability, and security hardening** at scale
-- 💬 Ask me about **OpenStack, OpenShift, Ceph, SDN, or production incident management**
-- ⚡ Fun fact: I believe most "impossible" outages are just a misread log line away from a fix 😄
+**Two container images. One command to deploy.**
 
----
-
-<!-- ===== TECH STACK ===== -->
-## 🛠️ Core Competencies & Tech Stack
-
-### ☁️ Cloud & Virtualization
-![OpenStack](https://img.shields.io/badge/OpenStack-ED1944?style=for-the-badge&logo=openstack&logoColor=white)
-![Red Hat OpenStack](https://img.shields.io/badge/RH%20OpenStack%20Platform-EE0000?style=for-the-badge&logo=redhat&logoColor=white)
-![Nokia NCS](https://img.shields.io/badge/Nokia%20NCS-124191?style=for-the-badge&logo=nokia&logoColor=white)
-![Nokia CBIS](https://img.shields.io/badge/Nokia%20CBIS-124191?style=for-the-badge&logo=nokia&logoColor=white)
-![VMware vSphere](https://img.shields.io/badge/VMware%20vSphere-607078?style=for-the-badge&logo=vmware&logoColor=white)
-![Telco Cloud](https://img.shields.io/badge/Telco%20Cloud-00599C?style=for-the-badge&logo=icloud&logoColor=white)
-![NFVI](https://img.shields.io/badge/NFVI-0F4C81?style=for-the-badge&logo=openstack&logoColor=white)
-
-### 📦 Container Orchestration
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![OpenShift](https://img.shields.io/badge/OpenShift-EE0000?style=for-the-badge&logo=redhatopenshift&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Podman](https://img.shields.io/badge/Podman-892CA0?style=for-the-badge&logo=podman&logoColor=white)
-![CNF/VNF](https://img.shields.io/badge/CNF%2FVNF%20Onboarding-2E8B57?style=for-the-badge&logo=kubernetes&logoColor=white)
-
-### 🌐 Networking & SDN
-![SDN](https://img.shields.io/badge/SDN-1A73E8?style=for-the-badge&logo=cisco&logoColor=white)
-![BGP](https://img.shields.io/badge/BGP-FF6F00?style=for-the-badge&logo=cisco&logoColor=white)
-![SR-IOV](https://img.shields.io/badge/SR--IOV-0071C5?style=for-the-badge&logo=intel&logoColor=white)
-![Multus](https://img.shields.io/badge/Multus-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Calico](https://img.shields.io/badge/Calico-F26829?style=for-the-badge&logo=projectcalico&logoColor=white)
-![HAProxy](https://img.shields.io/badge/HAProxy-106DA9?style=for-the-badge&logo=haproxy&logoColor=white)
-![Keepalived](https://img.shields.io/badge/Keepalived-AA0000?style=for-the-badge&logo=keepassxc&logoColor=white)
-![NGINX](https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white)
-![Ingress](https://img.shields.io/badge/Ingress%20Controller-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Reverse Proxy](https://img.shields.io/badge/Reverse%20Proxy-009639?style=for-the-badge&logo=nginx&logoColor=white)
-
-### 💾 Storage & Data
-![Ceph](https://img.shields.io/badge/Ceph%20Storage-EF5C55?style=for-the-badge&logo=ceph&logoColor=white)
-![etcd](https://img.shields.io/badge/etcd-419EDA?style=for-the-badge&logo=etcd&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
-
-### 📊 Observability & Logging
-![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
-![Grafana](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white)
-![VictoriaMetrics](https://img.shields.io/badge/VictoriaMetrics-621773?style=for-the-badge&logo=victoriametrics&logoColor=white)
-![Zabbix](https://img.shields.io/badge/Zabbix-D40000?style=for-the-badge&logo=zabbix&logoColor=white)
-![ELK Stack](https://img.shields.io/badge/ELK%20Stack-005571?style=for-the-badge&logo=elasticstack&logoColor=white)
-![OpenSearch](https://img.shields.io/badge/OpenSearch-005EB8?style=for-the-badge&logo=opensearch&logoColor=white)
-![Fluentd](https://img.shields.io/badge/Fluentd-0E83C8?style=for-the-badge&logo=fluentd&logoColor=white)
-![Fluent Bit](https://img.shields.io/badge/Fluent%20Bit-49BDA5?style=for-the-badge&logo=fluentbit&logoColor=white)
-
-### ⚙️ Automation & CI/CD
-![Ansible](https://img.shields.io/badge/Ansible-EE0000?style=for-the-badge&logo=ansible&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Shell](https://img.shields.io/badge/Shell%20Scripting-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
-![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-
-### 🐧 OS & Security
-![RHEL](https://img.shields.io/badge/RHEL-EE0000?style=for-the-badge&logo=redhat&logoColor=white)
-![systemd](https://img.shields.io/badge/systemd-30D475?style=for-the-badge&logo=systemd&logoColor=white)
-![SELinux](https://img.shields.io/badge/SELinux-EE0000?style=for-the-badge&logo=linux&logoColor=white)
-![firewalld](https://img.shields.io/badge/firewalld-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![iptables](https://img.shields.io/badge/iptables-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![TLS](https://img.shields.io/badge/TLS%20Certificates-721412?style=for-the-badge&logo=letsencrypt&logoColor=white)
-![Security Hardening](https://img.shields.io/badge/Security%20Hardening-000000?style=for-the-badge&logo=hackthebox&logoColor=white)
-
-### 📋 Methodologies & Operations
-![ITIL](https://img.shields.io/badge/ITIL-005C8A?style=for-the-badge&logo=itil&logoColor=white)
-![DevOps](https://img.shields.io/badge/DevOps-0078D7?style=for-the-badge&logo=azuredevops&logoColor=white)
-![Incident Mgmt](https://img.shields.io/badge/Incident%20Management-C70039?style=for-the-badge&logo=pagerduty&logoColor=white)
-![Problem Mgmt](https://img.shields.io/badge/Problem%20Management-900C3F?style=for-the-badge&logo=jira&logoColor=white)
-![RCA](https://img.shields.io/badge/Root%20Cause%20Analysis-581845?style=for-the-badge&logo=databricks&logoColor=white)
-![Production Support](https://img.shields.io/badge/Production%20Support-2E8B57?style=for-the-badge&logo=statuspage&logoColor=white)
+| Image | Purpose | Port |
+|-------|---------|------|
+| `headroom-proxy` | Headroom AI proxy — compresses LLM prompts | 8787 |
+| `headroom-gui` | nginx dashboard — auto-refreshes token savings data every second | 80 |
 
 ---
 
-<!-- ===== SOCIAL MEDIA LINKS =====
-  Type your handle into each link below.
-  LinkedIn already works. Delete any platform line you don't use. -->
-## 🌐 Find Me Online
+## Architecture
 
-<p align="left">
-  <a href="https://www.linkedin.com/in/pnsakinala/" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
-  <a href="https://www.youtube.com/@YOUR_HANDLE" target="_blank">
-    <img src="https://img.shields.io/badge/YouTube-Subscribe-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube" />
-  </a>
-  <a href="https://medium.com/@YOUR_HANDLE" target="_blank">
-    <img src="https://img.shields.io/badge/Medium-Follow-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium" />
-  </a>
-  <a href="https://www.instagram.com/YOUR_HANDLE" target="_blank">
-    <img src="https://img.shields.io/badge/Instagram-Follow-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" />
-  </a>
-</p>
+```
+Host machine
+├── Browser          → localhost:3000   (live telemetry dashboard)
+├── Claude Code      → localhost:8787   (ANTHROPIC_BASE_URL)
+└── kubectl          → port-forward bridge
 
----
+Podman Desktop (Kind cluster: headroom-api)
+└── namespace: headroom
+    ├── Pod: headroom-proxy   (headroom-ai[proxy] · port 8787)
+    │   ├── Service: NodePort 30787
+    │   └── Endpoints: /livez /readyz /health /stats /metrics
+    ├── Pod: headroom-gui     (nginx · dashboard · port 80)
+    │   └── Service: NodePort 30080
+    └── ConfigMap: CORS · telemetry settings
 
-<!-- ===== GITHUB STATS ===== -->
-## 📈 GitHub Stats
+            ↓ compressed API calls
 
-<p align="center">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=prrabbhanjon&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true&hide_border=true" alt="GitHub Stats" />
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=prrabbhanjon&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
-</p>
+    Anthropic API (api.anthropic.com · /v1/messages)
+```
 
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=prrabbhanjon&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
-</p>
+### How port-forward works
+
+NodePort services are exposed on the Kind container's internal IP — not directly on the host. `kubectl port-forward` opens a local socket, intercepts TCP connections, and tunnels them through the Kubernetes API server into the pod:
+
+- `localhost:3000` → `svc/headroom-gui:80` → nginx → serves dashboard
+- `localhost:8787` → `svc/headroom-proxy:8787` → headroom-ai → Anthropic API
+
+The dashboard's `/stats` polling happens pod-to-pod via `headroom-proxy:8787` internally — no CORS issues.
 
 ---
 
-<!-- ===== GITHUB TROPHIES ===== -->
-## 🏆 GitHub Trophies
+## Dashboard features
 
-<p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=prrabbhanjon&theme=onedark&no-frame=true&no-bg=false&margin-w=4&column=7" alt="GitHub Trophies" />
-</p>
+- Auto-refreshes every **1 second** — no manual refresh needed (like Zabbix)
+- Adjustable refresh rate: 0.5s / 1s / 2s / 5s / 10s
+- Pulsing live indicator + poll counter
+- **Metrics**: tokens saved, savings rate, input tokens, request count, CCR entries, proxy latency
+- **Charts**: tokens saved over time, savings % over time (Chart.js)
+- **Pipeline latency**: p50 / p95 bars for input, forward, generation
+- **CCR cache**: entries, retrievals, original vs compressed tokens, space saved
+- **Live request log**: model, input tokens, tokens saved per request — new entries flash green
+- Proxy stats pulled from `http://127.0.0.1:8787/stats`
 
 ---
 
-<!-- ===== FOOTER ===== -->
-## 🤝 Let's Connect
+## Prerequisites
 
-<p align="center">
-  <a href="https://www.linkedin.com/in/pnsakinala/" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-  </a>
-  <a href="https://www.youtube.com/@YOUR_HANDLE" target="_blank">
-    <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube" />
-  </a>
-  <a href="https://medium.com/@YOUR_HANDLE" target="_blank">
-    <img src="https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium" />
-  </a>
-  <a href="https://www.instagram.com/YOUR_HANDLE" target="_blank">
-    <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram" />
-  </a>
-</p>
+| Tool | Install |
+|------|---------|
+| [Podman Desktop](https://podman-desktop.io) | Download and install — includes Kind + kubectl |
+| Git | `brew install git` |
+| Node.js | `brew install node` |
+| Claude Code | `npm install -g @anthropic-ai/claude-code --ignore-scripts` |
+| headroom-ai | `pipx install "headroom-ai[all]"` |
 
-<p align="center">
-  <i>"Reliable infrastructure isn't an accident — it's automation, observability, and a calm hand during the 3 AM page."</i>
-</p>
+After installing Podman Desktop: **Settings → Kubernetes → Enable** and wait for the green dot.
 
-<p align="center">
-  ⭐️ Thanks for visiting — let's build resilient clouds together!
-</p>
+---
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:23a6d5,100:0db7ed&height=120&section=footer" alt="footer" />
+## Step 1 — Clone the repo
+
+```bash
+git clone https://github.com/prrabbhanjon/headroom-telemetry-gui.git
+cd headroom-telemetry-gui
+chmod +x setup.sh
+```
+
+---
+
+## Step 2 — Install (full setup from scratch)
+
+```bash
+./setup.sh install
+```
+
+This single command does everything:
+
+1. Checks all dependencies (podman, kind, kubectl, curl, python3)
+2. Auto-detects the Kind cluster name
+3. Starts the Kind container if stopped (after Mac sleep/reboot)
+4. Builds both images with Podman
+5. Saves images as tarballs and loads them into Kind's image store
+6. Applies all Kubernetes manifests
+7. Patches deployments with local image names and `imagePullPolicy: Never`
+8. Waits for both pods to be `1/1 Running`
+9. Starts port-forwarding in background
+10. Runs a 9-point health check
+11. Opens the dashboard in your browser
+
+---
+
+## Step 3 — Route Claude Code through the proxy
+
+```bash
+./setup.sh claude
+# or manually:
+ANTHROPIC_BASE_URL=http://127.0.0.1:8787 claude
+```
+
+Use Claude Code normally. Token savings appear in the dashboard within seconds.
+
+---
+
+## Step 4 — View the dashboard
+
+Open your browser at:
+
+```
+http://localhost:3000
+```
+
+Check proxy stats directly:
+
+```bash
+curl http://127.0.0.1:8787/stats | python3 -m json.tool
+```
+
+---
+
+## All setup.sh commands
+
+```bash
+./setup.sh install    # full setup: build, load, deploy, forward, health, open browser
+./setup.sh uninstall  # remove all K8s resources, stop forwards, optionally delete images
+./setup.sh start      # start Kind container + port-forwards (use after every reboot)
+./setup.sh health     # 9-point deep health check
+./setup.sh status     # quick overview: pods, services, forwards, conflict check, stats
+./setup.sh forward    # kill port conflicts, restart port-forwarding
+./setup.sh stop       # stop all port-forwards
+./setup.sh restart    # restart both deployments + re-forward
+./setup.sh claude     # start Claude Code through proxy (auto-fixes connection)
+./setup.sh logs       # show recent logs from both pods
+./setup.sh open       # open dashboard in browser
+./setup.sh help       # show all commands
+```
+
+---
+
+## After every reboot
+
+```bash
+./setup.sh start
+```
+
+This auto-starts the Kind container (which stops when Mac sleeps or reboots) and restarts port-forwarding.
+
+Optional — add to `~/.zshrc` for quick access:
+
+```bash
+alias headroom-start='cd ~/headroom-telemetry-gui && ./setup.sh start'
+alias headroom-claude='cd ~/headroom-telemetry-gui && ./setup.sh claude'
+alias headroom-health='cd ~/headroom-telemetry-gui && ./setup.sh health'
+```
+
+---
+
+## Project structure
+
+```
+headroom-telemetry-gui/
+├── .github/
+│   └── workflows/
+│       └── docker-publish.yml   # CI/CD: auto-builds and pushes on push to main + tags
+├── proxy/
+│   └── Dockerfile               # python:3.12-slim + headroom-ai[proxy]
+├── gui/
+│   ├── Dockerfile               # nginx:alpine + dashboard
+│   ├── index.html               # auto-refresh telemetry dashboard (Chart.js)
+│   └── nginx.conf               # serves GUI + proxies /api/ to headroom-proxy
+├── k8s/
+│   ├── namespace.yaml           # namespace: headroom
+│   ├── configmap.yaml           # CORS, telemetry env vars
+│   ├── proxy-deployment.yaml    # headroom-proxy pod
+│   ├── proxy-service.yaml       # NodePort 30787
+│   ├── gui-deployment.yaml      # headroom-gui pod
+│   └── gui-service.yaml         # NodePort 30080
+├── setup.sh                     # install · uninstall · start · health · claude · logs
+└── README.md
+```
+
+---
+
+## Kubernetes manifests explained
+
+### namespace.yaml
+Creates the `headroom` namespace to isolate all resources.
+
+### configmap.yaml
+Sets `HEADROOM_CORS_ORIGINS=*` and `HEADROOM_TELEMETRY=off` so the proxy accepts requests from the GUI pod and doesn't send telemetry.
+
+### proxy-deployment.yaml
+Deploys `headroom-proxy` with `imagePullPolicy: Never` (uses locally loaded image), readiness probe on `/livez`, and resource limits (256Mi–512Mi RAM, 250m–500m CPU).
+
+### proxy-service.yaml
+NodePort service mapping container port 8787 → node port 30787. Accessible via `kubectl port-forward` from the host.
+
+### gui-deployment.yaml
+Deploys `headroom-gui` (nginx serving the dashboard). Lightweight: 64Mi–128Mi RAM, 50m–100m CPU.
+
+### gui-service.yaml
+NodePort service mapping container port 80 → node port 30080.
+
+---
+
+## Pull pre-built images (no build needed)
+
+```bash
+podman pull ghcr.io/prrabbhanjon/headroom-proxy:latest
+podman pull ghcr.io/prrabbhanjon/headroom-gui:latest
+
+podman tag ghcr.io/prrabbhanjon/headroom-proxy:latest localhost/headroom-proxy:latest
+podman tag ghcr.io/prrabbhanjon/headroom-gui:latest   localhost/headroom-gui:latest
+
+kind load image-archive <(podman save localhost/headroom-proxy:latest) --name headroom-api
+kind load image-archive <(podman save localhost/headroom-gui:latest)   --name headroom-api
+
+kubectl apply -f k8s/
+./setup.sh forward
+```
+
+---
+
+## CI/CD — GitHub Actions
+
+On every push to `main` or version tag (`v*.*.*`), GitHub Actions automatically:
+
+1. Builds `headroom-proxy` from `./proxy/Dockerfile`
+2. Builds `headroom-gui` from `./gui/Dockerfile`
+3. Pushes both to `ghcr.io/prrabbhanjon/` with tags: `latest`, semver (`v1.0.0`), commit SHA
+
+To publish a release:
+
+```bash
+git tag -a v1.0.0 -m "first stable release"
+git push origin v1.0.0
+```
+
+Images appear at:
+- `ghcr.io/prrabbhanjon/headroom-proxy:v1.0.0`
+- `ghcr.io/prrabbhanjon/headroom-gui:v1.0.0`
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| `ErrImageNeverPull` | `kind load image-archive` not run — see Step 2 |
+| `ErrImagePull` | Set `imagePullPolicy: Never` and use `localhost/` image name |
+| Port already in use (8787) | Local headroom proxy conflict — run `./setup.sh forward` to auto-kill it |
+| Lost connection to pod | Pod restarted — run `./setup.sh forward` |
+| Tokens saved = 0 | Claude Code not routed through proxy — run `./setup.sh claude` |
+| Dashboard shows old content | Hard refresh: `Cmd+Shift+R` |
+| Kind container stopped (Exited 137) | `./setup.sh start` auto-restarts it |
+| `kind get clusters` empty | Run `./setup.sh start` or open Podman Desktop → Settings → Kubernetes |
+| Port-forward drops after sleep | Run `./setup.sh forward` or add aliases to `~/.zshrc` |
+
+---
+
+## Health check
+
+```bash
+./setup.sh health
+```
+
+Runs 9 checks:
+
+1. Kind container running
+2. Kubernetes pods in `Running` state
+3. Port conflict check on port 8787
+4. kubectl port-forwards active
+5. Proxy liveness `/livez`
+6. Proxy readiness `/readyz`
+7. Proxy health detail `/health` (version, uptime, all checks)
+8. GUI reachable at `localhost:3000`
+9. Proxy stats `/stats` (requests, tokens saved, savings %, CCR entries, latency)
+
+---
+
+## License
+
+Apache 2.0 — see [LICENSE](LICENSE).
+
+---
+
+<sub>Built with Podman Desktop · Kind · Python · nginx · Chart.js · GitHub Actions</sub>
