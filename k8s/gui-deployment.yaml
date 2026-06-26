@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: headroom-gui
+  namespace: headroom
+  labels:
+    app: headroom-gui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: headroom-gui
+  template:
+    metadata:
+      labels:
+        app: headroom-gui
+    spec:
+      containers:
+      - name: gui
+        image: headroom-gui:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"

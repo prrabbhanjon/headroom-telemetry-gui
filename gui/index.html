@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Headroom telemetry</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f3; color: #1a1a18; min-height: 100vh; }
+header { background: #fff; border-bottom: 1px solid #e5e4de; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+h1 { font-size: 16px; font-weight: 500; }
+.status-pill { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; }
+.live   { background: #EAF3DE; color: #27500A; }
+.offline { background: #FCEBEB; color: #791F1F; }
+.connecting { background: #F1EFE8; color: #444441; }
+.toolbar { background: #fff; border-bottom: 1px solid #e5e4de; padding: 10px 24px; display: flex; gap: 10px; align-items: center; }
+.toolbar input { font-size: 13px; padding: 6px 10px; border: 0.5px solid #d3d1c7; border-radius: 8px; width: 220px; background: #f5f5f3; }
+.toolbar button { font-size: 12px; padding: 6px 14px; border: 0.5px solid #d3d1c7; border-radius: 8px; background: transparent; cursor: pointer; }
+.toolbar button:hover { background: #f5f5f3; }
+.toolbar .auto-on { background: #EAF3DE; border-color: #9FE1CB; color: #27500A; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; padding: 20px 24px 0; }
+.mc { background: #fff; border-radius: 10px; padding: 14px 16px; border: 0.5px solid #e5e4de; }
+.mc-label { font-size: 11px; color: #73726c; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.mc-val { font-size: 24px; font-weight: 500; line-height: 1; }
+.mc-sub { font-size: 11px; color: #73726c; margin-top: 4px; }
+.mc-delta { font-size: 11px; margin-top: 4px; font-weight: 500; }
+.up { color: #3B6D11; } .dn { color: #A32D2D; }
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 24px 0; }
+.chart-card { background: #fff; border-radius: 10px; padding: 14px 16px; border: 0.5px solid #e5e4de; }
+.chart-card h3 { font-size: 12px; font-weight: 500; color: #73726c; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+.chart-wrap { position: relative; height: 160px; }
+.bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px 24px; }
+.panel { background: #fff; border-radius: 10px; padding: 14px 16px; border: 0.5px solid #e5e4de; }
+.panel h3 { font-size: 12px; font-weight: 500; color: #73726c; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+.row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 0.5px solid #f1efe8; font-size: 12px; }
+.row:last-child { border-bottom: none; }
+.row-label { color: #73726c; }
+.row-val { font-weight: 500; }
+.log-item { font-size: 11px; font-family: monospace; padding: 4px 0; border-bottom: 0.5px solid #f1efe8; display: flex; gap: 8px; color: #73726c; }
+.log-item:last-child { border-bottom: none; }
+.log-t { color: #b4b2a9; flex-shrink: 0; }
+.log-m { color: #185FA5; flex-shrink: 0; max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
+.log-s { color: #3B6D11; flex-shrink: 0; margin-left: auto; }
+.bar-wrap { flex: 1; margin: 0 8px; height: 4px; background: #f1efe8; border-radius: 2px; }
+.bar-fill { height: 4px; border-radius: 2px; background: #1D9E75; }
+.ticker { font-size: 11px; color: #b4b2a9; text-align: right; padding: 0 24px 16px; }
+@media (max-width: 640px) { .charts, .bottom { grid-template-columns: 1fr; } }
+@media (prefers-color-scheme: dark) {
+  body { background: #1a1a18; color: #e5e4de; }
+  header, .toolbar, .mc, .chart-card, .panel { background: #2a2a28; border-color: #3a3a38; }
+  .toolbar input { background: #1a1a18; border-color: #3a3a38; color: #e5e4de; }
+  .mc-label, .row-label, .chart-card h3, .panel h3 { color: #9c9a92; }
+  .row { border-color: #3a3a38; }
+  .log-item { border-color: #3a3a38; }
+  .bar-wrap { background: #3a3a38; }
+  .mc { border-color: #3a3a38; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Headroom telemetry</h1>
+  <span class="status-pill connecting" id="pill">connecting</span>
+</header>
+
+<div class="toolbar">
+  <input type="text" id="proxyUrl" value="http://127.0.0.1:8787" placeholder="Proxy URL" />
+  <button onclick="poll()">&#8635; Refresh</button>
+  <button id="autoBtn" onclick="toggleAuto()">&#9654; Auto 30s</button>
+  <span style="font-size:11px;color:#73726c;margin-left:auto" id="ticker"></span>
+</div>
+
+<div class="metrics">
+  <div class="mc"><div class="mc-label">Tokens saved</div><div class="mc-val" id="m0">—</div><div class="mc-sub">this session</div></div>
+  <div class="mc"><div class="mc-label">Savings rate</div><div class="mc-val" id="m1">—</div><div class="mc-delta" id="m1d"></div></div>
+  <div class="mc"><div class="mc-label">Input tokens</div><div class="mc-val" id="m2">—</div><div class="mc-sub">total sent</div></div>
+  <div class="mc"><div class="mc-label">Requests</div><div class="mc-val" id="m3">—</div><div class="mc-sub">proxied</div></div>
+  <div class="mc"><div class="mc-label">CCR entries</div><div class="mc-val" id="m4">—</div><div class="mc-sub">cached originals</div></div>
+  <div class="mc"><div class="mc-label">Proxy latency</div><div class="mc-val" id="m5">—</div><div class="mc-sub">p50 forward</div></div>
+</div>
+
+<div class="charts">
+  <div class="chart-card">
+    <h3>Tokens saved over time</h3>
+    <div class="chart-wrap"><canvas id="c1" role="img" aria-label="Token savings over time">Token savings history</canvas></div>
+  </div>
+  <div class="chart-card">
+    <h3>Savings % over time</h3>
+    <div class="chart-wrap"><canvas id="c2" role="img" aria-label="Savings percentage over time">Savings % history</canvas></div>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="panel">
+    <h3>Pipeline latency (ms)</h3>
+    <div id="latRows"><div style="font-size:12px;color:#73726c;padding:8px 0">No data yet</div></div>
+  </div>
+  <div class="panel">
+    <h3>CCR cache</h3>
+    <div id="ccrRows"><div style="font-size:12px;color:#73726c;padding:8px 0">No data yet</div></div>
+  </div>
+  <div class="panel" style="grid-column:1/-1">
+    <h3>Request log</h3>
+    <div id="logRows"><div style="font-size:12px;color:#73726c;padding:8px 0">No requests yet — start using Claude Code through the proxy</div></div>
+  </div>
+</div>
+
+<div class="ticker" id="tickerBottom">Never polled</div>
+
+<script>
+let c1 = null, c2 = null, autoTimer = null, autoOn = false, prevSaved = null;
+
+function fmt(n) {
+  if (n === undefined || n === null) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1)+'M';
+  if (n >= 1000) return (n/1000).toFixed(1)+'k';
+  return Math.round(n).toString();
+}
+
+function setPill(state) {
+  const p = document.getElementById('pill');
+  p.className = 'status-pill ' + state;
+  p.textContent = state;
+}
+
+function set(id, v) { const e = document.getElementById(id); if(e) e.textContent = v; }
+
+function renderCharts(hist) {
+  if (!hist || hist.length < 2) return;
+  const labels = hist.map(p => new Date(p.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}));
+  const saved  = hist.map(p => p.total_tokens_saved || 0);
+  const pct    = hist.map(p => p.total_input_tokens > 0 ? parseFloat(((p.total_tokens_saved/p.total_input_tokens)*100).toFixed(1)) : 0);
+  const gOpts  = { color:'rgba(136,135,128,0.12)' };
+  const tOpts  = { font:{size:10}, color:'#888780' };
+
+  if (c1) { c1.data.labels=labels; c1.data.datasets[0].data=saved; c1.update('none'); }
+  else c1 = new Chart(document.getElementById('c1'), { type:'line', data:{ labels, datasets:[{ label:'Saved', data:saved, borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,0.07)', fill:true, tension:0.35, pointRadius:2, borderWidth:1.5 }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ticks:{...tOpts,maxRotation:0,maxTicksLimit:5},grid:gOpts}, y:{ticks:{...tOpts,callback:v=>fmt(v)},grid:gOpts}}}});
+
+  if (c2) { c2.data.labels=labels; c2.data.datasets[0].data=pct; c2.update('none'); }
+  else c2 = new Chart(document.getElementById('c2'), { type:'line', data:{ labels, datasets:[{ label:'%', data:pct, borderColor:'#BA7517', backgroundColor:'rgba(186,117,23,0.07)', fill:true, tension:0.35, pointRadius:2, borderWidth:1.5 }]}, options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:{ticks:{...tOpts,maxRotation:0,maxTicksLimit:5},grid:gOpts}, y:{ticks:{...tOpts,callback:v=>v+'%'},grid:gOpts}}}});
+}
+
+function renderLatency(data) {
+  const tp = data.throughput;
+  if (!tp) return;
+  const rows = [
+    ['Input p50',   Math.round(tp.rolling?.input_active_p50||0),  3000],
+    ['Input p95',   Math.round(tp.rolling?.input_active_p95||0),  3000],
+    ['Forward p50', Math.round(tp.rolling?.forward_p50||0),        3000],
+    ['Forward p95', Math.round(tp.rolling?.forward_p95||0),        3000],
+    ['Gen p50',     Math.round(tp.rolling?.generation_p50||0),      500],
+  ];
+  document.getElementById('latRows').innerHTML = rows.map(([l,v,m]) =>
+    `<div class="row"><span class="row-label">${l}</span><div class="bar-wrap"><div class="bar-fill" style="width:${Math.min(100,v/m*100).toFixed(1)}%"></div></div><span class="row-val">${v}ms</span></div>`
+  ).join('');
+}
+
+function renderCCR(data) {
+  const c = data.compression || {};
+  document.getElementById('ccrRows').innerHTML = [
+    ['Entries',          c.ccr_entries || 0],
+    ['Retrievals',       c.ccr_retrievals || 0],
+    ['Original tokens',  fmt(c.original_tokens_cached)],
+    ['Compressed tokens',fmt(c.compressed_tokens_cached)],
+    ['Space saved',      c.original_tokens_cached > 0 ? ((1-c.compressed_tokens_cached/c.original_tokens_cached)*100).toFixed(1)+'%' : '—'],
+  ].map(([l,v]) => `<div class="row"><span class="row-label">${l}</span><span class="row-val">${v}</span></div>`).join('');
+}
+
+function renderLog(hist) {
+  if (!hist || !hist.length) return;
+  const recent = [...hist].reverse().slice(0,10);
+  document.getElementById('logRows').innerHTML = recent.map(h => {
+    const t   = new Date(h.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const pct = h.total_input_tokens > 0 ? ((h.total_tokens_saved/h.total_input_tokens)*100).toFixed(1) : '0';
+    const model = (h.model||'').replace('claude-','').substring(0,20);
+    return `<div class="log-item"><span class="log-t">${t}</span><span class="log-m">${model}</span><span>${fmt(h.total_input_tokens)} in</span><span class="log-s">-${fmt(h.total_tokens_saved)} (${pct}%)</span></div>`;
+  }).join('');
+}
+
+async function poll() {
+  const url = document.getElementById('proxyUrl').value.trim().replace(/\/$/,'');
+  setPill('connecting');
+  try {
+    const res  = await fetch(url + '/stats');
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const d    = await res.json();
+    setPill('live');
+
+    const sess  = d.display_session ?? d.persistent_savings?.display_session ?? {};
+    const saved = sess.tokens_saved || 0;
+    const delta = prevSaved !== null ? saved - prevSaved : null;
+    prevSaved   = saved;
+
+    set('m0', fmt(saved));
+    set('m1', (sess.savings_percent||0).toFixed(1)+'%');
+    if (delta !== null && delta !== 0) {
+      const el = document.getElementById('m1d');
+      el.textContent = (delta>0?'+':'')+fmt(delta)+' since last poll';
+      el.className   = 'mc-delta '+(delta>0?'up':'dn');
+    }
+    set('m2', fmt(sess.total_input_tokens));
+    set('m3', fmt(sess.requests));
+    set('m4', d.compression?.ccr_entries || 0);
+    set('m5', Math.round(d.throughput?.rolling?.forward_p50||0)+'ms');
+
+    const hist = d.persistent_savings?.recent_history || [];
+    renderCharts(hist);
+    renderLatency(d);
+    renderCCR(d);
+    renderLog(hist);
+
+    const ts = 'Updated '+new Date().toLocaleTimeString();
+    set('ticker', ts);
+    set('tickerBottom', ts);
+  } catch(e) {
+    setPill('offline');
+    set('tickerBottom', 'Failed: '+e.message+' — is the proxy running?');
+  }
+}
+
+function toggleAuto() {
+  autoOn = !autoOn;
+  const btn = document.getElementById('autoBtn');
+  btn.textContent = autoOn ? '⏸ Auto 30s' : '▶ Auto 30s';
+  btn.className   = autoOn ? 'auto-on' : '';
+  if (autoOn) autoTimer = setInterval(poll, 30000);
+  else clearInterval(autoTimer);
+}
+
+poll();
+</script>
+</body>
+</html>

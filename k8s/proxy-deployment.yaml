@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: headroom-proxy
+  namespace: headroom
+  labels:
+    app: headroom-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: headroom-proxy
+  template:
+    metadata:
+      labels:
+        app: headroom-proxy
+    spec:
+      containers:
+      - name: proxy
+        image: headroom-proxy:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8787
+        envFrom:
+        - configMapRef:
+            name: headroom-config
+        env:
+        - name: HEADROOM_CORS_ORIGINS
+          value: "*"
+        readinessProbe:
+          httpGet:
+            path: /livez
+            port: 8787
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: 8787
+          initialDelaySeconds: 30
+          periodSeconds: 20
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
