@@ -3,3 +3,10 @@
 *.zip
 headroom-telemetry-gui/
 mnt/
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+secrets/
