@@ -3,6 +3,7 @@
 > Live token savings dashboard for [Headroom AI](https://github.com/chopratejas/headroom) — deployed on Kubernetes via Podman Desktop.
 
 [![Build and publish images](https://github.com/prrabbhanjon/headroom-telemetry-gui/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/prrabbhanjon/headroom-telemetry-gui/actions/workflows/docker-publish.yml)
+![Repo views](https://komarev.com/ghpvc/?username=prrabbhanjon&color=brightgreen&style=flat&label=Repo+views)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![ghcr.io proxy](https://img.shields.io/badge/ghcr.io-headroom--proxy-teal)](https://ghcr.io/prrabbhanjon/headroom-proxy)
 [![ghcr.io gui](https://img.shields.io/badge/ghcr.io-headroom--gui-orange)](https://ghcr.io/prrabbhanjon/headroom-gui)
