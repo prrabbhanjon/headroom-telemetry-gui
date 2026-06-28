@@ -8,6 +8,7 @@
 [![ghcr.io proxy](https://img.shields.io/badge/ghcr.io-headroom--proxy-teal)](https://ghcr.io/YOUR_USERNAME/headroom-proxy)
 [![ghcr.io gui](https://img.shields.io/badge/ghcr.io-headroom--gui-orange)](https://ghcr.io/YOUR_USERNAME/headroom-gui)
 [![Feedback welcome](https://img.shields.io/badge/feedback-welcome-blue)](https://github.com/YOUR_USERNAME/headroom-telemetry-gui/issues/new?labels=feedback&title=%5BFeedback%5D+)
+[![Views](https://hits.sh/github.com/prrabbhanjon/headroom-telemetry-gui.svg?label=views&color=6f42c1)](https://hits.sh/github.com/prrabbhanjon/headroom-telemetry-gui/)
 
 ---
 
