@@ -25,6 +25,11 @@
 
 ---
 
+
+## Dashboard preview
+
+![Dashboard](docs/dashboard-preview.png)
+
 ## What is this?
 
 Every time you run an AI agent, it pulls in log files, searches code, grabs context — all of it goes into the LLM as a giant wall of text. You pay per token. Most of that text is boilerplate noise.
